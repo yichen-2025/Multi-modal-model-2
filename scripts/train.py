@@ -8,8 +8,8 @@ from transformers import Trainer, TrainingArguments, AutoTokenizer, TrainerCallb
 from src.model_architectures.multi_modal_model import MultiModalFusionModel
 from src.data.data_loader import generate_mock_data, load_real_data, load_split_data, collate_fn
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from utils.log_utils import save_log
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.log_utils import save_log, check_gpu_available
 
 
 class LossLoggerCallback(TrainerCallback):
@@ -106,6 +106,9 @@ def train_model(model_path="./models/qwen2.5-1.5b",
         MultiModalFusionModel: 训练完成的模型
     """
     start_time = time.time()
+    
+    print("\n[检查] 运行环境...")
+    check_gpu_available()
     
     if model_id is None:
         model_id = get_next_model_id()

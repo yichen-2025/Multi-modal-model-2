@@ -11,6 +11,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from transformers import AutoTokenizer
 from src.model_architectures.multi_modal_model import MultiModalFusionModel
 from src.data.data_loader import load_real_data, generate_mock_data, load_split_data
+from utils.log_utils import save_log, check_gpu_available
 
 REPORTS_DIR = "./test_reports"
 INDEX_FILE = os.path.join(REPORTS_DIR, "reports_index.csv")
@@ -265,6 +266,9 @@ def test_model(dataset_id=0, split_id=0, model_id=0,
     start_time = time.time()
     timestamp = datetime.now().isoformat()
     
+    print("\n[检查] 运行环境...")
+    check_gpu_available()
+    
     saved_model_path = get_model_path(model_id)
     
     if verbose:
@@ -416,6 +420,9 @@ def main():
     
     start_time = time.time()
     timestamp = datetime.now().isoformat()
+    
+    print("\n[检查] 运行环境...")
+    check_gpu_available()
     
     print("=" * 60)
     print("加载训练后模型")

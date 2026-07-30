@@ -5,22 +5,22 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.log_utils import save_log
 
 INPUT_CSV = "./processed_dataset/processed_dataset.csv"
 OUTPUT_DIR = "./processed_dataset"
 
 SELECTED_FEATURES = [
-    "Bwd Packet Length Mean",
-    "Avg Bwd Segment Size",
-    "Bwd Packet Length Max",
-    "Bwd Packet Length Std",
-    "Destination Port",
-    "URG Flag Count",
-    "Packet Length Mean",
-    "Average Packet Size",
-    "Packet Length Std"
+    "Flow_Duration",
+    "Tot_Fwd_Pkts",
+    "Tot_Bwd_Pkts",
+    "TotLen_Fwd_Pkts",
+    "TotLen_Bwd_Pkts",
+    "Flow_Byts/s",
+    "Fwd_Pkt_Len_Mean",
+    "Bwd_Pkt_Len_Mean",
+    "Pkt_Len_Mean"
 ]
 
 

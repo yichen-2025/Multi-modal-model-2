@@ -15,10 +15,10 @@
 
 import os
 
-from extract_subset import extract_subset
-from split_modality import split_modality
-from train import train_model
-from test_model import test_model
+from scripts.extract_subset import extract_subset
+from scripts.split_modality import split_modality
+from scripts.train import train_model
+from scripts.test_model import test_model
 
 
 def create_necessary_directories():
@@ -102,8 +102,8 @@ def main():
     # 输入：data_processing/ 目录下的CSV文件
     # 输出：processed_dataset/processed_dataset.csv
     # ============================================
-    # from data_cleaning import main as run_data_cleaning
-    # run_data_cleaning()
+    # from scripts.data_cleaning import main as run_data_cleaning
+    # run_data_cleaning("IoT Network Intrusion Dataset.csv")
     
     # ============================================
     # 步骤2：提取数据集子集
@@ -115,7 +115,7 @@ def main():
     #   random_state: 随机种子（默认42）
     # ============================================
     # success, dataset_id = extract_subset(
-    #     num_samples=5000,
+    #     num_samples=10000,
     #     # dataset_id=0,  # 可选：指定数据集ID
     #     random_state=42
     # )
@@ -134,7 +134,7 @@ def main():
     #   test_size: 测试集比例（默认0.2）
     #   random_state: 随机种子（默认42）
     # ============================================
-    # dataset_id = 0  # 与步骤2的dataset_id一致
+    # dataset_id = 3  # 与步骤2的dataset_id一致
     # split_modality(
     #     dataset_id=dataset_id,
     #     # split_id=0,  # 可选：指定划分ID
@@ -161,9 +161,9 @@ def main():
     #     train_model(
     #         model_path="./models/qwen2.5-1.5b",
     #         # model_id=0,  # 可选：指定模型ID
-    #         dataset_id=0,
+    #         dataset_id=3,
     #         split_id=0,
-    #         per_device_train_batch_size=2,
+    #         per_device_train_batch_size=4,
     #         gradient_accumulation_steps=4,
     #         learning_rate=1e-4,
     #         num_train_epochs=3
@@ -185,8 +185,8 @@ def main():
     # ============================================
     # try:
     #     result = test_model(
-    #         model_id=0,
-    #         dataset_id=0,
+    #         model_id=4,
+    #         dataset_id=3,
     #         split_id=0,
     #         verbose=True
     #     )
@@ -198,7 +198,7 @@ def main():
     # 参数：
     #   model_id: 模型ID
     # ============================================
-    # plot_loss_curve(model_id=0)
+    # plot_loss_curve(model_id=3)
 
 
 if __name__ == "__main__":

@@ -9,8 +9,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from src.model_architectures.bert_encoder import BertEncoder
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from utils.log_utils import save_log
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.log_utils import save_log, check_gpu_available
 
 BASE_INPUT_DIR = "./processed_dataset"
 BASE_OUTPUT_DIR = "./split_data"
@@ -18,15 +18,15 @@ BERT_MODEL_PATH = "./models/bert"
 TEST_SIZE = 0.2
 
 SELECTED_FEATURES = [
-    "Bwd Packet Length Mean",
-    "Avg Bwd Segment Size",
-    "Bwd Packet Length Max",
-    "Bwd Packet Length Std",
-    "Destination Port",
-    "URG Flag Count",
-    "Packet Length Mean",
-    "Average Packet Size",
-    "Packet Length Std"
+    "Flow_Duration",
+    "Tot_Fwd_Pkts",
+    "Tot_Bwd_Pkts",
+    "TotLen_Fwd_Pkts",
+    "TotLen_Bwd_Pkts",
+    "Flow_Byts/s",
+    "Fwd_Pkt_Len_Mean",
+    "Bwd_Pkt_Len_Mean",
+    "Pkt_Len_Mean"
 ]
 
 
@@ -54,15 +54,18 @@ def get_next_split_id(dataset_id):
 
 def generate_text_description(row):
     parts = []
-    parts.append(f"目标端口是{int(row['Destination Port'])}")
-    parts.append(f"反向包平均长度{row['Bwd Packet Length Mean']:.1f}字节")
-    parts.append(f"反向段平均大小{row['Avg Bwd Segment Size']:.1f}字节")
-    parts.append(f"反向包最大长度{int(row['Bwd Packet Length Max'])}字节")
-    parts.append(f"反向包长度标准差{row['Bwd Packet Length Std']:.1f}")
-    parts.append(f"URG标志计数{int(row['URG Flag Count'])}")
-    parts.append(f"包平均长度{row['Packet Length Mean']:.1f}字节")
-    parts.append(f"平均包大小{row['Average Packet Size']:.1f}字节")
-    parts.append(f"包长度标准差{row['Packet Length Std']:.1f}")
+    parts.append(f"协议类型为{row.get('Protocol', '未知')}")
+    parts.append(f"源IP地址{row.get('Src_IP', '未知')}")
+    parts.append(f"源端口号{int(row.get('Src_Port', 0))}")
+    parts.append(f"目的IP地址{row.get('Dst_IP', '未知')}")
+    parts.append(f"目的端口号{int(row.get('Dst_Port', 0))}")
+    parts.append(f"流持续时间{float(row.get('Flow_Duration', 0)):.2f}秒")
+    parts.append(f"前向包数量{int(row.get('Tot_Fwd_Pkts', 0))}")
+    parts.append(f"反向包数量{int(row.get('Tot_Bwd_Pkts', 0))}")
+    parts.append(f"流字节速率{float(row.get('Flow_Byts/s', 0)):.2f}字节/秒")
+    parts.append(f"前向包平均长度{float(row.get('Fwd_Pkt_Len_Mean', 0)):.2f}字节")
+    parts.append(f"反向包平均长度{float(row.get('Bwd_Pkt_Len_Mean', 0)):.2f}字节")
+    parts.append(f"平均包长度{float(row.get('Pkt_Len_Mean', 0)):.2f}字节")
     
     return "。".join(parts) + "。"
 
@@ -103,6 +106,7 @@ def split_modality(dataset_id=0, split_id=None, test_size=TEST_SIZE, random_stat
     print(f"  - 文本描述数量: {len(text_descriptions)}")
 
     print("\n4. 提取BERT文本嵌入...")
+    check_gpu_available()
     bert_encoder = BertEncoder(local_model_path=BERT_MODEL_PATH)
     bert_encoder.eval()
     with torch.no_grad():
