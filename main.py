@@ -103,7 +103,7 @@ def main():
     # 输出：processed_dataset/processed_dataset.csv
     # ============================================
     # from scripts.data_cleaning import main as run_data_cleaning
-    # run_data_cleaning("IoT Network Intrusion Dataset.csv")
+    # run_data_cleaning("IoT Network Intrusion Dataset_subset.csv")
     
     # ============================================
     # 步骤2：提取数据集子集
@@ -134,7 +134,7 @@ def main():
     #   test_size: 测试集比例（默认0.2）
     #   random_state: 随机种子（默认42）
     # ============================================
-    # dataset_id = 3  # 与步骤2的dataset_id一致
+    # dataset_id = 0  # 与步骤2的dataset_id一致
     # split_modality(
     #     dataset_id=dataset_id,
     #     # split_id=0,  # 可选：指定划分ID
@@ -161,7 +161,7 @@ def main():
     #     train_model(
     #         model_path="./models/qwen2.5-1.5b",
     #         # model_id=0,  # 可选：指定模型ID
-    #         dataset_id=3,
+    #         dataset_id=0,
     #         split_id=0,
     #         per_device_train_batch_size=4,
     #         gradient_accumulation_steps=4,
@@ -185,8 +185,8 @@ def main():
     # ============================================
     # try:
     #     result = test_model(
-    #         model_id=4,
-    #         dataset_id=3,
+    #         model_id=0,
+    #         dataset_id=0,
     #         split_id=0,
     #         verbose=True
     #     )
@@ -198,7 +198,7 @@ def main():
     # 参数：
     #   model_id: 模型ID
     # ============================================
-    # plot_loss_curve(model_id=3)
+    # plot_loss_curve(model_id=0)
 
 
 if __name__ == "__main__":
